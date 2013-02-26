@@ -1,6 +1,3 @@
-#1074 = 75+64+82+87+82+75+73+28+83+32+93+73+58+78+91 - figured w/pin & paper/trial & error
-#Pick the highest 5 from the bottom, then pick the next highest 6 from that number
-
 # numList[row][column]
 
 txt = open("triangle.txt")
@@ -11,7 +8,7 @@ def binaryMap(toBinary):
     binaryList = []
     tempString = ""
     tempString = str(bin(toBinary))
-    for i in range(6 - len(tempString)):
+    for i in range(12 - len(tempString)):
         binaryList.append('0')
     for x in range(2, len(tempString)):
         binaryList.append(tempString[x])
@@ -27,7 +24,7 @@ def bottomUp(rowCheck, columnCheck):
     binMap = []
     counter = 0
 
-    for i in range(16):
+    for i in range(1024):
         currentColumn = columnCheck
         currentRow = rowCheck
         binMap = binaryMap(i) # generates map to move up or left
@@ -42,8 +39,7 @@ def bottomUp(rowCheck, columnCheck):
             else:
                 mapper.append(currentColumn)
         
-        for moveUp in range(rowCheck, (rowCheck - 5), -1): #should not be nested
-            # for moveHoriz in mapper:
+        for moveUp in range(rowCheck, (rowCheck - 10), -1): 
             tempList.append(numList[moveUp][mapper[counter]])
             counter += 1
             
@@ -58,24 +54,25 @@ def bottomUp(rowCheck, columnCheck):
         mapper = []
     
     return highestList
-
-def findInRow(num, row):
+    
+# Finds where last iterations went through
+def findInRow(num, row): # Needs reworked
     results = map(int, numList[row -1])
     return results.index(num)
+# ----------------------------------------
 
-numList = str(txt.read()).split("\n", 15)
+numList = str(txt.read()).split("\n", 100)
 
-for x in range(15):
-    numList[x] = numList[x].split(" ", 15)
+for x in range(100):
+    numList[x] = numList[x].split(" ", 100)
 
 highNum = 0
 highList = []
 highestList = []
 
-
-for x in range(15):
+for x in range(100):
     tempNum = 0
-    tempList = bottomUp(14, x)
+    tempList = bottomUp(99, x)
     for i in tempList:
         tempNum += int(i)
     if(tempNum > highNum):
@@ -86,18 +83,19 @@ test = highList.pop()
 highestList += highList
 
 
-tempLocator = findInRow(int(test), 11)
+tempLocator = findInRow(int(test), 91)
 print tempLocator
-tempList = bottomUp((9), tempLocator)
+tempList = bottomUp((89), tempLocator)
 highestList.append(test)
 highestList += tempList
 test = highestList.pop()
 
-tempLocator = findInRow(int(test), 6)
+tempLocator = findInRow(int(test), 81)
 print tempLocator
-tempList = bottomUp((5), tempLocator)
+tempList = bottomUp((79), tempLocator)
 highestList.append(test)
 highestList += tempList
+highestList += numList[0][0]
         
 #test = highList.pop()
 #highestList += highList
