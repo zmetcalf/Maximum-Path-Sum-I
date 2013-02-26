@@ -23,6 +23,7 @@ def bottomUp(rowCheck, columnCheck):
     mapper = []
     binMap = []
     counter = 0
+    highestPoint = 0
 
     for i in range(1024):
         currentColumn = columnCheck
@@ -48,11 +49,12 @@ def bottomUp(rowCheck, columnCheck):
         if(tempTotal > total):
             total = tempTotal
             highestList = tempList
+            highestPoint = mapper.pop()
         tempList = []
         tempTotal = 0
         counter = 0
         mapper = []
-    
+    highestList.append(highestPoint)
     return highestList
     
 # Finds where last iterations went through
@@ -69,38 +71,32 @@ for x in range(100):
 highNum = 0
 highList = []
 highestList = []
+highLocation = 0
 
 for x in range(100):
     tempNum = 0
     tempList = bottomUp(99, x)
+    tempLocation = tempList.pop()
     for i in tempList:
         tempNum += int(i)
     if(tempNum > highNum):
         highNum = tempNum
         highList = tempList
+        highLocation = tempLocation
 
 test = highList.pop()
 highestList += highList
 
+for puzzle in range(89, 9, -10):
+    tempList = bottomUp(puzzle, highLocation)
+    highLocation = tempList.pop()
+    highestList.append(test)
+    highestList += tempList
+    test = highestList.pop()
 
-tempLocator = findInRow(int(test), 91)
-print tempLocator
-tempList = bottomUp((89), tempLocator)
+tempList = bottomUp(9, highLocation)
+highLocation = tempList.pop()
 highestList.append(test)
 highestList += tempList
-test = highestList.pop()
-
-tempLocator = findInRow(int(test), 81)
-print tempLocator
-tempList = bottomUp((79), tempLocator)
-highestList.append(test)
-highestList += tempList
-highestList += numList[0][0]
-        
-#test = highList.pop()
-#highestList += highList
 
 print highestList
-print test
-print highList
-print tempList
