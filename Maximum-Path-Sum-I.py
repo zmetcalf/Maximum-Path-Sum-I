@@ -63,6 +63,38 @@ numList = str(txt.read()).split("\n", 15)
 
 for x in range(15):
     numList[x] = numList[x].split(" ", 15)
-# print numList[14][0]  
-print bottomUp(14, 9)
-    
+
+highNum = 0
+highList = []
+highestList = []
+
+for x in range(15):
+    tempNum = 0
+    tempList = bottomUp(14, x)
+    for i in tempList:
+        tempNum += int(i)
+    if(tempNum > highNum):
+        highNum = tempNum
+        highList = tempList
+
+test = highList.pop()
+highestList += highList
+
+# -----Progression needs work----needs to find location and only find the highest
+highNum = 0
+
+for x in range(11):
+    tempNum = 0
+    tempList = bottomUp(11, x)
+    for i in tempList:
+        tempNum += int(i)
+    if(tempNum > highNum):
+        highNum = tempNum
+        highList = tempList
+        
+test = highList.pop()
+highestList += highList
+
+print highestList
+print highList
+print test
