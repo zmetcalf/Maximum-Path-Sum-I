@@ -8,7 +8,7 @@ def binaryMap(toBinary):
     binaryList = []
     tempString = ""
     tempString = str(bin(toBinary))
-    for i in range(12 - len(tempString)):
+    for i in range(22 - len(tempString)):
         binaryList.append('0')
     for x in range(2, len(tempString)):
         binaryList.append(tempString[x])
@@ -25,7 +25,7 @@ def bottomUp(rowCheck, columnCheck):
     counter = 0
     highestPoint = 0
 
-    for i in range(1024):
+    for i in range(1048576): #Int num + 1 - must be even
         currentColumn = columnCheck
         currentRow = rowCheck
         binMap = binaryMap(i) # generates map to move up or left
@@ -40,7 +40,7 @@ def bottomUp(rowCheck, columnCheck):
             else:
                 mapper.append(currentColumn)
         
-        for moveUp in range(rowCheck, (rowCheck - 10), -1): 
+        for moveUp in range(rowCheck, (rowCheck - 20), -1): #change for row checks = num of 111 in binary
             tempList.append(numList[moveUp][mapper[counter]])
             counter += 1
             
@@ -56,12 +56,6 @@ def bottomUp(rowCheck, columnCheck):
         mapper = []
     highestList.append(highestPoint)
     return highestList
-    
-# Finds where last iterations went through
-def findInRow(num, row): # Needs reworked
-    results = map(int, numList[row -1])
-    return results.index(num)
-# ----------------------------------------
 
 numList = str(txt.read()).split("\n", 100)
 
@@ -87,16 +81,22 @@ for x in range(100):
 test = highList.pop()
 highestList += highList
 
-for puzzle in range(89, 9, -10):
+for puzzle in range(79, 19, -20):
     tempList = bottomUp(puzzle, highLocation)
     highLocation = tempList.pop()
     highestList.append(test)
     highestList += tempList
     test = highestList.pop()
 
-tempList = bottomUp(9, highLocation)
+tempList = bottomUp(19, highLocation)
 highLocation = tempList.pop()
 highestList.append(test)
 highestList += tempList
 
 print highestList
+
+highestTotal = 0
+for x in highestList:
+    highestTotal += int(x)
+
+print highestTotal
