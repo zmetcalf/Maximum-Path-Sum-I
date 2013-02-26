@@ -59,6 +59,10 @@ def bottomUp(rowCheck, columnCheck):
     
     return highestList
 
+def findInRow(num, row):
+    results = map(int, numList[row -1])
+    return results.index(num)
+
 numList = str(txt.read()).split("\n", 15)
 
 for x in range(15):
@@ -67,6 +71,7 @@ for x in range(15):
 highNum = 0
 highList = []
 highestList = []
+
 
 for x in range(15):
     tempNum = 0
@@ -80,21 +85,24 @@ for x in range(15):
 test = highList.pop()
 highestList += highList
 
-# -----Progression needs work----needs to find location and only find the highest
-highNum = 0
 
-for x in range(11):
-    tempNum = 0
-    tempList = bottomUp(11, x)
-    for i in tempList:
-        tempNum += int(i)
-    if(tempNum > highNum):
-        highNum = tempNum
-        highList = tempList
+tempLocator = findInRow(int(test), 11)
+print tempLocator
+tempList = bottomUp((9), tempLocator)
+highestList.append(test)
+highestList += tempList
+test = highestList.pop()
+
+tempLocator = findInRow(int(test), 6)
+print tempLocator
+tempList = bottomUp((5), tempLocator)
+highestList.append(test)
+highestList += tempList
         
-test = highList.pop()
-highestList += highList
+#test = highList.pop()
+#highestList += highList
 
 print highestList
-print highList
 print test
+print highList
+print tempList
