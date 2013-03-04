@@ -2,6 +2,7 @@ import java.nio.charset.Charset;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.*;
+import java.util.Arrays;
 
 public class JavaRework {
     
@@ -9,10 +10,9 @@ public class JavaRework {
     private String[][] testArray = new String[100][100];
     private int highestPoint = 0;
     private int veryHighestPoint = 0;
+    private String[] highestList = new String[100];
     
     public JavaRework() {
-
-        System.out.println(getBinaryMap(15));
         
         String fileName = "triangle.txt";
         Charset charset = Charset.forName("US-ASCII");
@@ -29,11 +29,14 @@ public class JavaRework {
         catch (IOException x) {
             System.err.format("IOException: %s%n", x);
         }      
+        //System.out.println(testArray[70][0] + " " + testArray[70][1]);
+        calculateSequence();
     }
     
     private void calculateSequence() {
         int tempNum = 0;
         int highNum = 0;
+        int highListCount = 0;
         String[] tempList = new String[LINE_SEARCH];
         String[] highList = new String[LINE_SEARCH];
         
@@ -48,11 +51,48 @@ public class JavaRework {
                 highList = tempList; 
                 veryHighestPoint = highestPoint;
             }
+           
         }
+        for(int i = 0; i < LINE_SEARCH; i++) {
+                highestList[i] = highList[i];
+                highListCount++;
+        }
+        
+        for(int puzzle = 74; puzzle > (LINE_SEARCH - 1); puzzle -= LINE_SEARCH) {
+            tempList = getHighestSequence(puzzle, veryHighestPoint);
+            veryHighestPoint = highestPoint;
+            
+            for(int i = 0; i < LINE_SEARCH; i++) {
+                highestList[highListCount] = tempList[i];
+                highListCount++;
+            }      
+        }
+        
+        tempList = getHighestSequence((LINE_SEARCH - 1), veryHighestPoint);
+            
+        for(int i = 0; i < LINE_SEARCH; i++) {
+            highestList[highListCount] = tempList[i];
+            highListCount++;
+        }
+    }
+    
+    public void printListAndTotal() {
+        int highestTotal = 0;
+        for(String x : highestList) {
+            highestTotal += Integer.parseInt(x);
+        }
+        
+        System.out.println("Highest list is: " + highestList);
+        System.out.println("Highest total is: " + highestTotal);
     }
     
     private String getBinaryMap(int toBinary) {
         String binaryNumber = Integer.toBinaryString(toBinary);
+        String zeroPrefix = "";
+        for(int x = 0; x < (LINE_SEARCH - binaryNumber.length()); x++) {
+            zeroPrefix += "0";
+        } 
+        binaryNumber = zeroPrefix + binaryNumber;
         return binaryNumber;
     }
     
@@ -68,7 +108,7 @@ public class JavaRework {
         int highestPoint = 0;
         int currentColumn = 0;
         int currentRow = 0;
-        int binMapCounter = 1;
+        int binMapCounter = 0;
         
         for(int i = 0; i < 33554432; i++) {
             currentColumn = columnCheck;
@@ -77,7 +117,6 @@ public class JavaRework {
             mapper[0] = Integer.toString(columnCheck);
             
             for(int z : binMap) {
-                binMapCounter = 1;
                 currentRow -= 1;
                 currentColumn -= (z - 48);
                 if(currentColumn >= currentRow) {
@@ -92,9 +131,9 @@ public class JavaRework {
                 binMapCounter++;
             }
             
-            for(int moveUp = rowCheck; moveUp >= (rowCheck - LINE_SEARCH); i--) {
-                tempSequence[counter] = 
-                    testArray[moveUp][Integer.parseInt(mapper[counter])];
+            for(int moveUp = rowCheck; moveUp > (rowCheck - LINE_SEARCH); moveUp--) {
+                //System.out.println(moveUp + " " + counter + " " + mapper[counter]);
+                tempSequence[counter] = testArray[moveUp][Integer.parseInt(mapper[counter])];
                 counter++;
             }
             
@@ -107,11 +146,11 @@ public class JavaRework {
                 highestSequence = tempSequence;
                 setHighestPoint(Integer.parseInt(mapper[LINE_SEARCH - 1]));
             }
-            
-            tempSequence = null;
+            Arrays.fill(tempSequence, null);
+            Arrays.fill(mapper, null);
             tempTotal = 0;
             counter = 0;
-            mapper = null;
+            binMapCounter = 0;
         }
         return highestSequence;
     }
