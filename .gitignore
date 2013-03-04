@@ -36,3 +36,5 @@ nosetests.xml
 
 /.c9revisions
 *.c9save
+
+*.class
