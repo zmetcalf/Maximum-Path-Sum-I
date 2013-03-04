@@ -8,7 +8,7 @@ def binaryMap(toBinary):
     binaryList = []
     tempString = ""
     tempString = str(bin(toBinary))
-    for i in range(22 - len(tempString)):
+    for i in range(27 - len(tempString)): # Number of ones plus 2
         binaryList.append('0')
     for x in range(2, len(tempString)):
         binaryList.append(tempString[x])
@@ -25,7 +25,7 @@ def bottomUp(rowCheck, columnCheck):
     counter = 0
     highestPoint = 0
 
-    for i in range(1048576): #Int num + 1 - must be even
+    for i in range(33554432): #Int num + 1 - must be even
         currentColumn = columnCheck
         currentRow = rowCheck
         binMap = binaryMap(i) # generates map to move up or left
@@ -40,7 +40,7 @@ def bottomUp(rowCheck, columnCheck):
             else:
                 mapper.append(currentColumn)
         
-        for moveUp in range(rowCheck, (rowCheck - 20), -1): #change for row checks = num of 111 in binary
+        for moveUp in range(rowCheck, (rowCheck - 25), -1): #change for row checks = num of 111 in binary
             tempList.append(numList[moveUp][mapper[counter]])
             counter += 1
             
@@ -81,14 +81,14 @@ for x in range(100):
 test = highList.pop()
 highestList += highList
 
-for puzzle in range(79, 19, -20):
+for puzzle in range(74, 24, -20):
     tempList = bottomUp(puzzle, highLocation)
     highLocation = tempList.pop()
     highestList.append(test)
     highestList += tempList
     test = highestList.pop()
 
-tempList = bottomUp(19, highLocation)
+tempList = bottomUp(24, highLocation)
 highLocation = tempList.pop()
 highestList.append(test)
 highestList += tempList
