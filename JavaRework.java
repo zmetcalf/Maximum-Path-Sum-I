@@ -29,7 +29,6 @@ public class JavaRework {
         catch (IOException x) {
             System.err.format("IOException: %s%n", x);
         }      
-        //System.out.println(testArray[70][0] + " " + testArray[70][1]);
         calculateSequence();
     }
     
@@ -43,6 +42,7 @@ public class JavaRework {
         for(int x = 0; x < 100; x++) {
             tempNum = 0;
             tempList = getHighestSequence(99, x);
+
             for(String i : tempList) {
                 tempNum += Integer.parseInt(i);
             }
@@ -81,9 +81,11 @@ public class JavaRework {
         for(String x : highestList) {
             highestTotal += Integer.parseInt(x);
         }
-        
-        System.out.println("Highest list is: " + highestList);
-        System.out.println("Highest total is: " + highestTotal);
+		System.out.print("Highest list is: ");
+        for(String i : highestList) {
+			System.out.print(i + " ");
+		}
+        System.out.println("\nHighest total is: " + highestTotal);
     }
     
     private String getBinaryMap(int toBinary) {
@@ -132,7 +134,6 @@ public class JavaRework {
             }
             
             for(int moveUp = rowCheck; moveUp > (rowCheck - LINE_SEARCH); moveUp--) {
-                //System.out.println(moveUp + " " + counter + " " + mapper[counter]);
                 tempSequence[counter] = testArray[moveUp][Integer.parseInt(mapper[counter])];
                 counter++;
             }
@@ -146,8 +147,6 @@ public class JavaRework {
                 highestSequence = tempSequence;
                 setHighestPoint(Integer.parseInt(mapper[LINE_SEARCH - 1]));
             }
-            Arrays.fill(tempSequence, null);
-            Arrays.fill(mapper, null);
             tempTotal = 0;
             counter = 0;
             binMapCounter = 0;
